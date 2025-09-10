@@ -51,7 +51,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                     child: Column(
                       children: [
                         Text(
-                          "Register",
+                          "Profile",
                           style: TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
@@ -59,7 +59,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "Register to continue",
+                          "Fill this to continue",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.black54),
                         ),
@@ -143,7 +143,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   const SizedBox(height: 15),
 
                   // DOB
-                  const Text("Date of Birth"),
+                  const Text("Date of Birth *"),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: dateController,
@@ -169,7 +169,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   const SizedBox(height: 15),
 
                   // Sex
-                  const Text("Biological Sex"),
+                  const Text("Biological Sex *"),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
                     value: selectedSex,
@@ -209,7 +209,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                       child: Ink(
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
-                            colors: [Color(0xFFd74240), Color(0xFFaa2c2c)],
+                            colors: [Colors.blue, Colors.blue],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
