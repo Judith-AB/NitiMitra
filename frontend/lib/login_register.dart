@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/register_screen.dart';
-import 'package:login/dashboard.dart';
+import 'package:frontend/dashboard.dart';
 
 class AuthLandingPage extends StatefulWidget {
   const AuthLandingPage({super.key});
@@ -154,7 +154,7 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const Dashboard(),
+                                      builder: (context) => const DashboardScreen(),
                                     ),
                                   );
                                 }
@@ -222,7 +222,7 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const RegisterScreen2(),
+                                          const  RegisterScreen2(),
                                     ),
                                   );
                                 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:frontend/dashboard.dart';
 class RegisterScreen2 extends StatefulWidget {
   const RegisterScreen2({super.key});
 
@@ -35,7 +35,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black,
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -195,7 +195,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const BlankPage(),
+                              builder: (context) => const DashboardScreen(),
                             ),
                           );
                         }
@@ -252,19 +252,19 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
   }
 }
 
-// Blank page
-class BlankPage extends StatelessWidget {
-  const BlankPage({super.key});
+// // Blank page
+// class BlankPage extends StatelessWidget {
+//   const BlankPage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          "This is the next blank page",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Scaffold(
+//       body: Center(
+//         child: Text(
+//           "This is the next blank page",
+//           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+//         ),
+//       ),
+//     );
+//   }
+// }
