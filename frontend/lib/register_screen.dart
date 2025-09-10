@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:frontend/dashboard.dart';
 class RegisterScreen2 extends StatefulWidget {
   const RegisterScreen2({super.key});
 
@@ -35,7 +35,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black,
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -51,7 +51,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                     child: Column(
                       children: [
                         Text(
-                          "Register",
+                          "Profile",
                           style: TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
@@ -59,7 +59,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "Register to continue",
+                          "Fill this to continue",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.black54),
                         ),
@@ -143,7 +143,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   const SizedBox(height: 15),
 
                   // DOB
-                  const Text("Date of Birth"),
+                  const Text("Date of Birth *"),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: dateController,
@@ -169,7 +169,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   const SizedBox(height: 15),
 
                   // Sex
-                  const Text("Biological Sex"),
+                  const Text("Biological Sex *"),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
                     value: selectedSex,
@@ -195,7 +195,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const BlankPage(),
+                              builder: (context) => const DashboardScreen(),
                             ),
                           );
                         }
@@ -209,7 +209,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                       child: Ink(
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
-                            colors: [Color(0xFFd74240), Color(0xFFaa2c2c)],
+                            colors: [Colors.blue, Colors.blue],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -252,19 +252,19 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
   }
 }
 
-// Blank page
-class BlankPage extends StatelessWidget {
-  const BlankPage({super.key});
+// // Blank page
+// class BlankPage extends StatelessWidget {
+//   const BlankPage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          "This is the next blank page",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Scaffold(
+//       body: Center(
+//         child: Text(
+//           "This is the next blank page",
+//           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+//         ),
+//       ),
+//     );
+//   }
+// }
