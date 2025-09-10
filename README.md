@@ -25,20 +25,20 @@ By making policy access affordable, inclusive, and transparent, NitiMitra direct
 
 ---
 
-### 🛠 Tech Stack
+###  Tech Stack
 - **Frontend:** Flutter (Dart) – cross-platform mobile app  
 - **Backend & Database:** Firebase (Firestore, Auth, Cloud Functions)  
 - **APIs:** Government APIs (API Setu, OGD, IRDAI, RBI, Surepass)  
 
 ---
 
-### 🎨 Designs / Prototype
+###  Designs / Prototype
 Check out our Figma prototype here 👉 [NitiMitra Figma Link](https://www.figma.com/community/file/1547658165259400280/nitimitra-app-ui-design)  
 
 ---
 
 
-### 👥 Work Split-up
+###  Work Split-up
 
 #### 🔹 A – Frontend (Flutter – UI/UX)
 - Authentication screens (OTP/Google Login)  
