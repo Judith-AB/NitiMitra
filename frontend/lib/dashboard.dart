@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Added this import
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'services/scheme_service.dart'; // Make sure this path is correct
-import 'models/policy_scheme.dart';   // Import the new model
-import 'login_register.dart';         // For logout navigation
+import 'package:url_launcher/url_launcher.dart';
+import 'services/scheme_service.dart';
+import 'models/policy_scheme.dart';
+import 'login_register.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -23,7 +24,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _dashboardDataFuture = _loadDashboardData();
   }
 
-  /// Fetches user data and their eligible schemes from Firestore.
   Future<Map<String, dynamic>> _loadDashboardData() async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -44,25 +44,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
       final String userDob = userData['dob'];
       final String userGender = userData['gender'];
 
-      // Use the SchemeService to get filtered schemes
       List<Map<String, dynamic>> schemesData = await _schemeService.getEligibleSchemes(
         userState: userState,
         userDobStr: userDob,
         userGender: userGender,
       );
 
-      // Convert the raw data into a list of PolicyScheme objects
       List<PolicyScheme> recommendedSchemes =
           schemesData.map((data) => PolicyScheme.fromMap(data)).toList();
 
       return {'userName': userName, 'schemes': recommendedSchemes};
     } catch (e) {
-      // Propagate the error to be handled by the FutureBuilder
       throw Exception("Failed to load dashboard data: ${e.toString()}");
     }
   }
   
-  /// Signs the user out and navigates back to the login screen.
   Future<void> _logout() async {
     await FirebaseAuth.instance.signOut();
     if (mounted) {
@@ -73,11 +69,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
+  /// This function now launches the URL from the scheme.
+  void _applyForScheme(PolicyScheme scheme) async {
+    if (scheme.link.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No application link is available for this scheme.')),
+      );
+      return;
+    }
+
+    final Uri url = Uri.parse(scheme.link);
+
+    if (await canLaunchUrl(url)) {
+      // Opens the link in an external browser app
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      // Show an error message if the URL can't be launched
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not open the link: ${scheme.link}')),
+        );
+      }
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // ... (Your existing background gradient)
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -105,16 +124,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  /// Builds the main dashboard body using a FutureBuilder to handle async data.
   Widget _buildDashboardContent() {
     return FutureBuilder<Map<String, dynamic>>(
       future: _dashboardDataFuture,
       builder: (context, snapshot) {
-        // Show a loading spinner while data is being fetched
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-        // Show an error message if fetching failed
         if (snapshot.hasError) {
           return Center(
             child: Padding(
@@ -131,7 +147,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return const Center(child: Text("No data available."));
         }
 
-        // If data is available, extract it and build the UI
         final String userName = snapshot.data!['userName'];
         final List<PolicyScheme> schemes = snapshot.data!['schemes'];
 
@@ -166,9 +181,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
   
-  // --- All other UI helper methods (_buildTopNavigationBar, _buildWelcomeSection, etc.) ---
-  // --- remain the same as in your original file, but with dynamic data. ---
-
   Widget _buildTopNavigationBar() {
     return Container(
       margin: const EdgeInsets.all(20),
@@ -432,7 +444,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
       onTap: (index) {
-        if (index == 3) { // Logout on the 4th item tap
+        if (index == 3) {
           _logout();
         } else {
           setState(() => _currentIndex = index);
@@ -445,7 +457,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
         BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
         BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Alerts"),
-        BottomNavigationBarItem(icon: Icon(Icons.logout), label: "Logout"), // Changed to Logout
+        BottomNavigationBarItem(icon: Icon(Icons.logout), label: "Logout"),
       ],
     );
   }
@@ -477,12 +489,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Text("${scheme.title}\n\n${scheme.description}"),
       ),
     );
-  }
-
-  void _applyForScheme(PolicyScheme scheme) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("Opening ${scheme.title} application..."),
-    ));
   }
 }
 
