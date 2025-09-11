@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:frontend/dashboard.dart';
 
 class RegisterScreen2 extends StatefulWidget {
   final String? name;
@@ -101,8 +102,8 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: nameController,
-                    validator:
-                        (value) => value!.isEmpty ? "Full name is required" : null,
+                    validator: (value) =>
+                        value!.isEmpty ? "Full name is required" : null,
                     decoration: _inputDecoration("Enter your full name"),
                   ),
                   const SizedBox(height: 15),
@@ -112,8 +113,8 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: emailController,
-                    validator:
-                        (value) => value!.isEmpty ? "Email is required" : null,
+                    validator: (value) =>
+                        value!.isEmpty ? "Email is required" : null,
                     decoration: _inputDecoration("Enter your email"),
                   ),
                   const SizedBox(height: 15),
@@ -128,10 +129,9 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(10),
                     ],
-                    validator: (value) =>
-                        value == null || value.length != 10
-                            ? "Enter a valid 10-digit number"
-                            : null,
+                    validator: (value) => value == null || value.length != 10
+                        ? "Enter a valid 10-digit number"
+                        : null,
                     decoration: _inputDecoration("Enter your phone number"),
                   ),
                   const SizedBox(height: 15),
@@ -144,9 +144,11 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                     items: const [
                       DropdownMenuItem(value: "Tamil", child: Text("Tamil")),
                       DropdownMenuItem(value: "Hindi", child: Text("Hindi")),
-                      DropdownMenuItem(value: "Malayalam", child: Text("Malayalam")),
+                      DropdownMenuItem(
+                          value: "Malayalam", child: Text("Malayalam")),
                     ],
-                    onChanged: (value) => setState(() => selectedLanguage = value),
+                    onChanged: (value) =>
+                        setState(() => selectedLanguage = value),
                     validator: (value) =>
                         value == null ? "Please select a language" : null,
                     decoration: _inputDecoration("Select your language"),
@@ -160,8 +162,10 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                     value: selectedState,
                     items: const [
                       DropdownMenuItem(value: "Kerala", child: Text("Kerala")),
-                      DropdownMenuItem(value: "Tamil Nadu", child: Text("Tamil Nadu")),
-                      DropdownMenuItem(value: "Karnataka", child: Text("Karnataka")),
+                      DropdownMenuItem(
+                          value: "Tamil Nadu", child: Text("Tamil Nadu")),
+                      DropdownMenuItem(
+                          value: "Karnataka", child: Text("Karnataka")),
                     ],
                     onChanged: (value) => setState(() => selectedState = value),
                     validator: (value) =>
@@ -217,13 +221,17 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   DropdownButtonFormField<String>(
                     value: selectedIncome,
                     items: const [
-                      DropdownMenuItem(value: "Student", child: Text("Student")),
-                      DropdownMenuItem(value: "<2L", child: Text("Less than 2 L")),
+                      DropdownMenuItem(
+                          value: "Student", child: Text("Student")),
+                      DropdownMenuItem(
+                          value: "<2L", child: Text("Less than 2 L")),
                       DropdownMenuItem(value: "2-5L", child: Text("2-5 L")),
                       DropdownMenuItem(value: "5-10L", child: Text("5-10 L")),
-                      DropdownMenuItem(value: ">10L", child: Text("More than 10 L")),
+                      DropdownMenuItem(
+                          value: ">10L", child: Text("More than 10 L")),
                     ],
-                    onChanged: (value) => setState(() => selectedIncome = value),
+                    onChanged: (value) =>
+                        setState(() => selectedIncome = value),
                     validator: (value) =>
                         value == null ? "Please select income status" : null,
                     decoration: _inputDecoration("Select income status"),
@@ -236,7 +244,8 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                   DropdownButtonFormField<String>(
                     value: selectedCaste,
                     items: const [
-                      DropdownMenuItem(value: "General", child: Text("General")),
+                      DropdownMenuItem(
+                          value: "General", child: Text("General")),
                       DropdownMenuItem(value: "OBC", child: Text("OBC")),
                       DropdownMenuItem(value: "SC/ST", child: Text("SC/ST")),
                     ],
@@ -255,10 +264,12 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                     items: const [
                       DropdownMenuItem(value: "Hindu", child: Text("Hindu")),
                       DropdownMenuItem(value: "Muslim", child: Text("Muslim")),
-                      DropdownMenuItem(value: "Christian", child: Text("Christian")),
+                      DropdownMenuItem(
+                          value: "Christian", child: Text("Christian")),
                       DropdownMenuItem(value: "Other", child: Text("Other")),
                     ],
-                    onChanged: (value) => setState(() => selectedReligion = value),
+                    onChanged: (value) =>
+                        setState(() => selectedReligion = value),
                     validator: (value) =>
                         value == null ? "Please select religion" : null,
                     decoration: _inputDecoration("Select religion"),
@@ -272,9 +283,12 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                     value: selectedMaritalStatus,
                     items: const [
                       DropdownMenuItem(value: "Single", child: Text("Single")),
-                      DropdownMenuItem(value: "Married", child: Text("Married")),
-                      DropdownMenuItem(value: "Divorced", child: Text("Divorced")),
-                      DropdownMenuItem(value: "Widowed", child: Text("Widowed")),
+                      DropdownMenuItem(
+                          value: "Married", child: Text("Married")),
+                      DropdownMenuItem(
+                          value: "Divorced", child: Text("Divorced")),
+                      DropdownMenuItem(
+                          value: "Widowed", child: Text("Widowed")),
                     ],
                     onChanged: (value) =>
                         setState(() => selectedMaritalStatus = value),
@@ -291,7 +305,12 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // Submit data or navigate
+                          // Navigate to Dashboard
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const DashboardScreen()),
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(

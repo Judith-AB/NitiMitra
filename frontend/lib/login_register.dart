@@ -14,7 +14,7 @@ class _AuthLandingPageState extends State<AuthLandingPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // Controllers
+  // Controllers for Login/SignUp
   final TextEditingController _loginEmailController = TextEditingController();
   final TextEditingController _loginPasswordController =
       TextEditingController();
@@ -55,23 +55,27 @@ class _AuthLandingPageState extends State<AuthLandingPage>
   }
 
   void _showSnackBar(String message) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
+  // Login function
   Future<void> _login() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _loginEmailController.text.trim(),
         password: _loginPasswordController.text.trim(),
       );
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const DashboardScreen()));
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const DashboardScreen()));
     } on FirebaseAuthException catch (e) {
       _showSnackBar(e.message ?? "Login failed");
     }
   }
 
+  // SignUp function
   Future<void> _signUp() async {
     if (_signUpNameController.text.isEmpty) {
       _showSnackBar("Please enter your name");
@@ -82,8 +86,9 @@ class _AuthLandingPageState extends State<AuthLandingPage>
         email: _signUpEmailController.text.trim(),
         password: _signUpPasswordController.text.trim(),
       );
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const RegisterScreen2()));
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const RegisterScreen2()));
     } on FirebaseAuthException catch (e) {
       _showSnackBar(e.message ?? "Sign up failed");
     }
@@ -127,7 +132,7 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                       borderRadius: BorderRadius.circular(30),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black,
+                          color: Colors.black.withOpacity(0.1),
                           blurRadius: 5,
                           offset: const Offset(0, 3),
                         ),

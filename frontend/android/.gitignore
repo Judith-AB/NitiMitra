@@ -11,3 +11,7 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+
+# Firebase config
+/android/app/google-services.json
+/ios/Runner/GoogleService-Info.plist
