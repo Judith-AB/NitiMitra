@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:frontend/register_screen.dart';
 import 'package:frontend/dashboard.dart';
 
@@ -13,14 +14,13 @@ class _AuthLandingPageState extends State<AuthLandingPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  // Controllers for Login
-  final TextEditingController _loginPhoneController = TextEditingController();
+  // Controllers for Login/SignUp
+  final TextEditingController _loginEmailController = TextEditingController();
   final TextEditingController _loginPasswordController =
       TextEditingController();
 
-  // Controllers for Sign Up
   final TextEditingController _signUpNameController = TextEditingController();
-  final TextEditingController _signUpPhoneController = TextEditingController();
+  final TextEditingController _signUpEmailController = TextEditingController();
   final TextEditingController _signUpPasswordController =
       TextEditingController();
 
@@ -33,10 +33,10 @@ class _AuthLandingPageState extends State<AuthLandingPage>
   @override
   void dispose() {
     _tabController.dispose();
-    _loginPhoneController.dispose();
+    _loginEmailController.dispose();
     _loginPasswordController.dispose();
     _signUpNameController.dispose();
-    _signUpPhoneController.dispose();
+    _signUpEmailController.dispose();
     _signUpPasswordController.dispose();
     super.dispose();
   }
@@ -55,9 +55,43 @@ class _AuthLandingPageState extends State<AuthLandingPage>
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  // Login function
+  Future<void> _login() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _loginEmailController.text.trim(),
+        password: _loginPasswordController.text.trim(),
+      );
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const DashboardScreen()));
+    } on FirebaseAuthException catch (e) {
+      _showSnackBar(e.message ?? "Login failed");
+    }
+  }
+
+  // SignUp function
+  Future<void> _signUp() async {
+    if (_signUpNameController.text.isEmpty) {
+      _showSnackBar("Please enter your name");
+      return;
+    }
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _signUpEmailController.text.trim(),
+        password: _signUpPasswordController.text.trim(),
+      );
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const RegisterScreen2()));
+    } on FirebaseAuthException catch (e) {
+      _showSnackBar(e.message ?? "Sign up failed");
+    }
   }
 
   @override
@@ -70,7 +104,6 @@ class _AuthLandingPageState extends State<AuthLandingPage>
             padding: const EdgeInsets.all(24),
             child: Column(
               children: [
-                // Logo
                 CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.blue.shade100,
@@ -81,15 +114,11 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // Welcome Text
                 const Text(
                   "Welcome to NitiMitra",
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
-
-                // Tab bar (Login / Sign Up)
                 Container(
                   height: 48,
                   decoration: BoxDecoration(
@@ -115,8 +144,6 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                   ),
                 ),
                 const SizedBox(height: 25),
-
-                // Tab Views
                 SizedBox(
                   height: 400,
                   child: TabBarView(
@@ -126,12 +153,12 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Phone Number"),
+                          const Text("Email"),
                           const SizedBox(height: 8),
                           TextField(
-                            controller: _loginPhoneController,
-                            keyboardType: TextInputType.phone,
-                            decoration: _inputDecoration("+91 XXXXX XXXXX"),
+                            controller: _loginEmailController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: _inputDecoration("Enter your email"),
                           ),
                           const SizedBox(height: 16),
                           const Text("Password"),
@@ -146,19 +173,7 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                             width: double.infinity,
                             height: 50,
                             child: ElevatedButton(
-                              onPressed: () {
-                                if (_loginPhoneController.text.isEmpty ||
-                                    _loginPasswordController.text.isEmpty) {
-                                  _showSnackBar("Please fill all fields");
-                                } else {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const DashboardScreen(),
-                                    ),
-                                  );
-                                }
-                              },
+                              onPressed: _login,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
                                 shape: RoundedRectangleBorder(
@@ -168,14 +183,12 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                               child: const Text(
                                 "Login",
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 12),
                         ],
                       ),
 
@@ -187,17 +200,16 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                           const SizedBox(height: 8),
                           TextField(
                             controller: _signUpNameController,
-                            decoration: _inputDecoration(
-                              "Enter your full name",
-                            ),
+                            decoration:
+                                _inputDecoration("Enter your full name"),
                           ),
                           const SizedBox(height: 16),
-                          const Text("Phone Number"),
+                          const Text("Email"),
                           const SizedBox(height: 8),
                           TextField(
-                            controller: _signUpPhoneController,
-                            keyboardType: TextInputType.phone,
-                            decoration: _inputDecoration("Enter phone number"),
+                            controller: _signUpEmailController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: _inputDecoration("Enter your email"),
                           ),
                           const SizedBox(height: 16),
                           const Text("Password"),
@@ -212,21 +224,7 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                             width: double.infinity,
                             height: 50,
                             child: ElevatedButton(
-                              onPressed: () {
-                                if (_signUpNameController.text.isEmpty ||
-                                    _signUpPhoneController.text.isEmpty ||
-                                    _signUpPasswordController.text.isEmpty) {
-                                  _showSnackBar("Please fill all fields");
-                                } else {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const  RegisterScreen2(),
-                                    ),
-                                  );
-                                }
-                              },
+                              onPressed: _signUp,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
                                 shape: RoundedRectangleBorder(
@@ -236,10 +234,9 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                               child: const Text(
                                 "Sign Up",
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
