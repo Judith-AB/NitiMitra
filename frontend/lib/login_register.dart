@@ -41,6 +41,7 @@ class _AuthLandingPageState extends State<AuthLandingPage>
     super.dispose();
   }
 
+  // Common input decoration for text fields
   InputDecoration _inputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
@@ -87,8 +88,14 @@ class _AuthLandingPageState extends State<AuthLandingPage>
         password: _signUpPasswordController.text.trim(),
       );
       if (!mounted) return;
+      // Pass name and email to the profile screen
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const RegisterScreen2()));
+          context,
+          MaterialPageRoute(
+              builder: (_) => RegisterScreen2(
+                    name: _signUpNameController.text.trim(),
+                    email: _signUpEmailController.text.trim(),
+                  )));
     } on FirebaseAuthException catch (e) {
       _showSnackBar(e.message ?? "Sign up failed");
     }
@@ -149,7 +156,7 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      // ---------------- Login ----------------
+                      // Login Tab
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -180,19 +187,17 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              child: const Text(
-                                "Login",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                              child: const Text("Login",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                         ],
                       ),
 
-                      // ---------------- Sign Up ----------------
+                      // Sign Up Tab
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -231,13 +236,11 @@ class _AuthLandingPageState extends State<AuthLandingPage>
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              child: const Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                              child: const Text("Sign Up",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                         ],

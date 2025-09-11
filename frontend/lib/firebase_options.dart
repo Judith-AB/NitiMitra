@@ -46,7 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '563910306319',
     projectId: 'nitimitra-94986',
     authDomain: 'nitimitra-94986.firebaseapp.com',
-    storageBucket: 'nitimitra-94986.firebasestorage.app',
+    storageBucket: 'nitimitra-94986.appspot.com',
     measurementId: 'G-V0H7NMBS00',
   );
 
@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
     appId: '1:563910306319:android:3800781504503f2fe6517a',
     messagingSenderId: '563910306319',
     projectId: 'nitimitra-94986',
-    storageBucket: 'nitimitra-94986.firebasestorage.app',
+    storageBucket: 'nitimitra-94986.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     appId: '1:563910306319:ios:74733e4ff7fda5f7e6517a',
     messagingSenderId: '563910306319',
     projectId: 'nitimitra-94986',
-    storageBucket: 'nitimitra-94986.firebasestorage.app',
+    storageBucket: 'nitimitra-94986.appspot.com',
     iosBundleId: 'com.example.frontend',
   );
 
@@ -72,7 +72,7 @@ class DefaultFirebaseOptions {
     appId: '1:563910306319:ios:74733e4ff7fda5f7e6517a',
     messagingSenderId: '563910306319',
     projectId: 'nitimitra-94986',
-    storageBucket: 'nitimitra-94986.firebasestorage.app',
+    storageBucket: 'nitimitra-94986.appspot.com',
     iosBundleId: 'com.example.frontend',
   );
 
@@ -82,8 +82,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '563910306319',
     projectId: 'nitimitra-94986',
     authDomain: 'nitimitra-94986.firebaseapp.com',
-    storageBucket: 'nitimitra-94986.firebasestorage.app',
+    storageBucket: 'nitimitra-94986.appspot.com',
     measurementId: 'G-49JFHQTKZ7',
   );
-
 }
