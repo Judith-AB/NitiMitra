@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'splashscreen.dart';
+import 'package:frontend/splashscreen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const NitiMitraApp());
 }
 
@@ -14,7 +20,7 @@ class NitiMitraApp extends StatelessWidget {
       title: 'NitiMitra',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Poppins'),
-      home: const SplashScreen(), // Start with Splash
+      home: const SplashScreen(),
     );
   }
 }
