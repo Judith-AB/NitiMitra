@@ -1,0 +1,38 @@
+[
+  {
+    "name": "National Means cum Merit Scholarship",
+    "eligibility": "Class 9-12, family income < 1,50,000",
+    "amount": 12000,
+    "category": "General"
+  },
+  {
+    "name": "Post-Matric Scholarship for SC Students",
+    "eligibility": "SC students, family income < 2,50,000",
+    "amount": 15000,
+    "category": "SC"
+  },
+  {
+    "name": "Top Class Education Scheme for SC Students",
+    "eligibility": "SC students, family income < 6,00,000",
+    "amount": 45000,
+    "category": "SC"
+  },
+  {
+    "name": "National Scholarship for Persons with Disabilities",
+    "eligibility": "Students with disabilities, family income < 3,00,000",
+    "amount": 20000,
+    "category": "General"
+  },
+  {
+    "name": "Prime Minister's Scholarship Scheme for Central Armed Police Forces",
+    "eligibility": "Wards of CAPF personnel, family income < 6,00,000",
+    "amount": 30000,
+    "category": "General"
+  },
+  {
+    "name": "Merit Cum Means Scholarship for Professional and Technical Courses",
+    "eligibility": "Minority communities, family income < 2,50,000",
+    "amount": 20000,
+    "category": "General"
+  }
+]
