@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Added this import
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'services/scheme_service.dart';
 import 'models/policy_scheme.dart';
 import 'login_register.dart';
+import 'profile_screen.dart'; // Import the new profile screen
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -55,6 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       return {'userName': userName, 'schemes': recommendedSchemes};
     } catch (e) {
+      // Return the error to be handled by the FutureBuilder
       throw Exception("Failed to load dashboard data: ${e.toString()}");
     }
   }
@@ -62,6 +64,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future<void> _logout() async {
     await FirebaseAuth.instance.signOut();
     if (mounted) {
+      // Navigate to the login screen and remove all previous routes
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const AuthLandingPage()),
         (Route<dynamic> route) => false,
@@ -71,6 +74,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   /// This function now launches the URL from the scheme.
   void _applyForScheme(PolicyScheme scheme) async {
+    // Check if the link is valid and not empty
     if (scheme.link.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('No application link is available for this scheme.')),
@@ -128,9 +132,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return FutureBuilder<Map<String, dynamic>>(
       future: _dashboardDataFuture,
       builder: (context, snapshot) {
+        // Handle loading state
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
+        // Handle error state
         if (snapshot.hasError) {
           return Center(
             child: Padding(
@@ -143,10 +149,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           );
         }
+        // Handle no data state
         if (!snapshot.hasData || snapshot.data == null) {
           return const Center(child: Text("No data available."));
         }
 
+        // If data is available, build the UI
         final String userName = snapshot.data!['userName'];
         final List<PolicyScheme> schemes = snapshot.data!['schemes'];
 
@@ -270,10 +278,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
           ),
-          const CircleAvatar(
-            radius: 28,
-            backgroundColor: Color.fromARGB(255, 216, 223, 255),
-            child: Icon(Icons.person, color: Colors.white, size: 28),
+          // --- THIS IS THE CLICKABLE PROFILE ICON ---
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              ).then((_) {
+                // This re-fetches data when you return from the profile screen
+                setState(() {
+                  _dashboardDataFuture = _loadDashboardData();
+                });
+              });
+            },
+            child: const CircleAvatar(
+              radius: 28,
+              backgroundColor: Color.fromARGB(255, 216, 223, 255),
+              child: Icon(Icons.person, color: Colors.white, size: 28),
+            ),
           ),
         ],
       ),
